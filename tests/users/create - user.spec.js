@@ -125,9 +125,10 @@ test.describe('Create user module', () => {
         await page.getByRole('textbox', { name: 'Username' }).fill('Admin1');
         await page.getByRole('textbox', { name: 'Password' }).fill('AdminP1');
         await page.locator('select[name="usertype"]').selectOption('1');
-        await page.locator('button.btn-secondary', { hasText: 'Close' }).click();
+      
 
         //for checking the close button function
+        await page.locator('button.btn-secondary', { hasText: 'Close' }).click();
        await expect(page.getByText('CoreUI LogoSystem')).toBeVisible();
     });
       
