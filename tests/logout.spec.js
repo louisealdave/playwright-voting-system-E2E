@@ -5,7 +5,7 @@ test.describe('Logout Module', () => {
  
     test('Valid Logout', async ({page}) => {
     
-    await login(page,'Admin1', 'AdminP1')
+    await login(page,'admin', 'admin123')
     await page.getByRole('button', { name: 'user@email.com' }).click();
     await page.getByRole('button', { name: 'Logout'}).click();
     await expect(page).toHaveURL('/login')

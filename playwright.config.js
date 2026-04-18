@@ -29,7 +29,7 @@ export default defineConfig({
   use: {
     headless: false,
     slowMo: 1000, // 1 second delay
-    baseURL: 'https://investor-acute-philips-drink.trycloudflare.com/',
+    baseURL: 'https://passive-born-deadline-louisiana.trycloudflare.com/',
     trace: 'on-first-retry',
     /* Base URL to use in actions like `await page.goto('')`. */
     // baseURL: 'http://localhost:3000',
@@ -44,7 +44,7 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-
+/*
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
@@ -54,6 +54,7 @@ export default defineConfig({
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
     },
+  */
 
     /* Test against mobile viewports. */
     // {
