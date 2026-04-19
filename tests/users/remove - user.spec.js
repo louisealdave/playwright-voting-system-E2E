@@ -22,12 +22,10 @@ test.describe('Remove user module', () => {
         await page.getByRole('button', { name: 'Yes' }).click();
         await page.getByRole('button', { name: 'OK' }).click();
 
-
-         //for checking the removed admin user in the user list
+        //for checking the removed admin user in the user list
         const removedTargetRow= await getUserRow(page, 'Admin6', 'Admin');
         await expect(removedTargetRow).not.toBeVisible();
     
-
         //for checking if the removed user can login
         await logout(page);
         await login (page, 'Admin6', 'AdminP6');
@@ -46,7 +44,7 @@ test.describe('Remove user module', () => {
         await page.getByRole('button', { name: 'Yes' }).click();
         await page.getByRole('button', { name: 'OK' }).click();
 
-         //for checking the removed admin user in the user list
+        //for checking the removed admin user in the user list
         const removedTrgetRow= await getUserRow(page, 'RegularUser3', 'User');
         await expect(removedTrgetRow).not.toBeVisible();
 
@@ -56,7 +54,7 @@ test.describe('Remove user module', () => {
         await createUser(page, 'Voter3', 'VoterP3', '3');
         await page.getByRole('button', { name: 'OK' }).click();
 
-       //for checking the created regular user in the user list and removing it
+        //for checking the created regular user in the user list and removing it
         const row= await getUserRow(page, 'Voter3', 'Voter');
         await expect(row).toBeVisible();
         await row.getByRole('button', { name: 'Remove' }).click();

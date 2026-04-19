@@ -3,6 +3,7 @@ const { login } = require('../helpers/auth');
 const { logout } = require('../helpers/logout');
 const { createUser } = require('../helpers/create-user');
 const { getUserRow } = require('../helpers/getUserRow');
+const { updateUser } = require('../helpers/updateUser');
 
 
 test.describe('Update user module', () => {
@@ -21,9 +22,7 @@ test.describe('Update user module', () => {
         await row.getByRole('button', { name: 'Update' }).click();
         
         //for updating the user data
-         await page.getByRole('textbox', { name: 'Username' }).fill('Admin2Updated');
-        await page.locator('select[name="usertype"]').selectOption('1');
-        await page.locator('button').filter({ hasText: /^Update$/ }).click();
+        await updateUser(page, { username: 'Admin2Updated' });
 
         //for checking the success message after updating user details
         await expect(page.getByText('User Update Success!')).toBeVisible();
@@ -53,9 +52,7 @@ test.describe('Update user module', () => {
         await row.getByRole('button', { name: 'Update' }).click();
         
         //for updating the user data
-        await page.getByRole('textbox', { name: 'Password' }).fill('AdminUpdate123');
-        await page.locator('select[name="usertype"]').selectOption('1');
-        await page.locator('button').filter({ hasText: /^Update$/ }).click();
+        await updateUser(page, { password: 'AdminUpdate123' });
 
         //for checking the success message after updating user details
         await expect(page.getByText('User Update Success!')).toBeVisible();
@@ -85,8 +82,7 @@ test.describe('Update user module', () => {
         await row.getByRole('button', { name: 'Update' }).click();
         
         //for updating the user data
-        await page.locator('select[name="usertype"]').selectOption('2');
-        await page.locator('button').filter({ hasText: /^Update$/ }).click();
+       await updateUser(page, { userType: '2' });
 
         //for checking the success message after updating user details
         await expect(page.getByText('User Update Success!')).toBeVisible();
@@ -108,8 +104,7 @@ test.describe('Update user module', () => {
         await row.getByRole('button', { name: 'Update' }).click();
         
         //for updating the user data
-        await page.locator('select[name="usertype"]').selectOption('3');
-        await page.locator('button').filter({ hasText: /^Update$/ }).click();
+        await updateUser(page, { userType: '3' })
 
         //for checking the success message after updating user details
         await expect(page.getByText('User Update Success!')).toBeVisible();
@@ -146,18 +141,14 @@ test.describe('Update user module', () => {
         await row.getByRole('button', { name: 'Update' }).click();
         
         //for updating the user data
-        await page.getByRole('textbox', { name: 'Username' }).fill('');
-        await page.locator('select[name="usertype"]').selectOption('3');
-        await page.locator('button').filter({ hasText: /^Update$/ }).click();
-
+        await updateUser(page, { username: '' });
+    
         //for checking the required field validation for username
         const username = page.getByRole('textbox', { name: 'Username' });
         await expect(username).toHaveJSProperty('validity.valid', false);
     
     });
 
-
-    
      test('Update voter user with empty password', async ({page}) => {
         await createUser(page, 'Voter3', 'VoterP3', '3');
         await page.getByRole('button', { name: 'OK' }).click();
@@ -168,9 +159,7 @@ test.describe('Update user module', () => {
         await row.getByRole('button', { name: 'Update' }).click();
         
         //for updating the user data
-         await page.getByRole('textbox', { name: 'Password' }).fill('');
-        await page.locator('select[name="usertype"]').selectOption('3');
-        await page.locator('button').filter({ hasText: /^Update$/ }).click();
+        await updateUser(page, { password: '' });
 
         //for checking the required field validation for username
         const password = page.getByRole('textbox', { name: 'Password' });
@@ -188,11 +177,8 @@ test.describe('Update user module', () => {
         await row.getByRole('button', { name: 'Update' }).click();
         
         //for updating the user data
-        await page.getByRole('textbox', { name: 'Username' }).fill('');
-        await page.getByRole('textbox', { name: 'Password' }).fill('');
-        await page.locator('select[name="usertype"]').selectOption('3');
-        await page.locator('button').filter({ hasText: /^Update$/ }).click();
-
+        await updateUser(page, { username: '', password: '' });
+        
         //for checking the required field validation for username
         const username = page.getByRole('textbox', { name: 'Username' });
         const password = page.getByRole('textbox', { name: 'Password' });
