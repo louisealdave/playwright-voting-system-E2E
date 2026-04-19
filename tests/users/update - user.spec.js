@@ -1,5 +1,8 @@
 const {test, expect} = require('@playwright/test');
 const { login } = require('../helpers/auth');
+const { create } = require('node:domain');
+const { logout } = require('../helpers/logout');
+const { createUser } = require('../helpers/create-user');
 
 
 test.describe('Update user module', () => {
@@ -9,13 +12,13 @@ test.describe('Update user module', () => {
     });
 
     test('Update username for admin user with valid data', async ({page}) => {
-        await page.waitForLoadState('domcontentloaded');
-        await page.getByRole('link', { name: 'System Users' }).click();
+        await createUser(page, 'Admin2', 'AdminP2', '1');
+        await page.getByRole('button', { name: 'OK' }).click();
 
         //for checking the created admin user in the user list and updating it
        
         const targetRow=page.locator('tr')
-        .filter({hasText:'Admin1'})
+        .filter({hasText:'Admin2'})
         .filter({hasText:'Admin'})
         .first();
 
@@ -23,39 +26,40 @@ test.describe('Update user module', () => {
         await targetRow.getByRole('button', { name: 'Update' }).click();
         
         //for updating the user data
-         await page.getByRole('textbox', { name: 'Username' }).fill('Admin1Updated');
+         await page.getByRole('textbox', { name: 'Username' }).fill('Admin2Updated');
         await page.locator('select[name="usertype"]').selectOption('1');
         await page.locator('button').filter({ hasText: /^Update$/ }).click();
 
-        //for checking the success message after creating a user
+        //for checking the success message after updating user details
         await expect(page.getByText('User Update Success!')).toBeVisible();
         await page.getByRole('button', { name: 'OK' }).click();
 
         //for checking the updated admin user in the user list
        
         const updatedtargetRow=page.locator('tr')
-        .filter({hasText:'Admin1Updated'})
+        .filter({hasText:'Admin2Updated'})
         .filter({hasText:'Admin'})
         .first();
         await expect(updatedtargetRow).toBeVisible();
 
         //for checking if the updated username works
-        await page.getByRole('button', { name: 'user@email.com' }).click();
-        await page.getByRole('button', { name: 'Logout'}).click();
+        await logout(page);
         await expect(page).toHaveURL('/login')
 
-        await login (page, 'Admin1Updated', 'AdminP1');
+        await login (page, 'Admin2Updated', 'AdminP2');
+        await expect (page.getByText('Logging in to user...')).toContainText('Logging in to user...');
+        await expect (page).toHaveURL('/login')
 
     });
 
     test('Update password for admin user with valid data', async ({page}) => {
-        await page.waitForLoadState('domcontentloaded');
-        await page.getByRole('link', { name: 'System Users' }).click();
-
+        await createUser(page, 'Admin3', 'AdminP3', '1');
+        await page.getByRole('button', { name: 'OK' }).click();
+    
         //for checking the created admin user in the user list and updating it
        
         const targetRow=page.locator('tr')
-        .filter({hasText:'Admin1Updated'})
+        .filter({hasText:'Admin3'})
         .filter({hasText:'Admin'})
         .first();
 
@@ -67,35 +71,36 @@ test.describe('Update user module', () => {
         await page.locator('select[name="usertype"]').selectOption('1');
         await page.locator('button').filter({ hasText: /^Update$/ }).click();
 
-        //for checking the success message after creating a user
+        //for checking the success message after updating user details
         await expect(page.getByText('User Update Success!')).toBeVisible();
         await page.getByRole('button', { name: 'OK' }).click();
 
         //for checking the updated admin user in the user list
        
         const updatedtargetRow=page.locator('tr')
-        .filter({hasText:'Admin1Updated'})
+        .filter({hasText:'Admin3'})
         .filter({hasText:'Admin'})
         .first();
         await expect(updatedtargetRow).toBeVisible();
 
         //for checking if the updated password works
-        await page.getByRole('button', { name: 'user@email.com' }).click();
-        await page.getByRole('button', { name: 'Logout'}).click();
+        await logout(page);
         await expect(page).toHaveURL('/login')
 
-         await login (page, 'Admin1Updated', 'AdminUpdate123');
+        await login (page, 'Admin3', 'AdminUpdate123');
+        await expect (page.getByText('Logging in to user...')).toContainText('Logging in to user...');
+        await expect (page).toHaveURL('/login')
 
     });
 
     test('Update usertype for admin user to user', async ({page}) => {
-        await page.waitForLoadState('domcontentloaded');
-        await page.getByRole('link', { name: 'System Users' }).click();
+        await createUser(page, 'Admin4', 'AdminP4', '1');
+        await page.getByRole('button', { name: 'OK' }).click();
 
         //for checking the created admin user in the user list and updating it
        
         const targetRow=page.locator('tr')
-        .filter({hasText:'Admin1Updated'})
+        .filter({hasText:'Admin4'})
         .filter({hasText:'Admin'})
         .first();
 
@@ -106,14 +111,14 @@ test.describe('Update user module', () => {
         await page.locator('select[name="usertype"]').selectOption('2');
         await page.locator('button').filter({ hasText: /^Update$/ }).click();
 
-        //for checking the success message after creating a user
+        //for checking the success message after updating user details
         await expect(page.getByText('User Update Success!')).toBeVisible();
         await page.getByRole('button', { name: 'OK' }).click();
 
         //for checking the updated admin user in the user list
        
         const updatedtargetRow=page.locator('tr')
-        .filter({hasText:'Admin1Updated'})
+        .filter({hasText:'Admin4'})
         .filter({hasText:'User'})
         .first();
         await expect(updatedtargetRow).toBeVisible();
@@ -122,13 +127,13 @@ test.describe('Update user module', () => {
     });
 
      test('Update usertype for regular user to voter', async ({page}) => {
-        await page.waitForLoadState('domcontentloaded');
-        await page.getByRole('link', { name: 'System Users' }).click();
+        await createUser(page, 'RegularUser2', 'RegUserP2', '2');
+        await page.getByRole('button', { name: 'OK' }).click();
 
         //for checking the created admin user in the user list and updating it
        
         const targetRow=page.locator('tr')
-        .filter({hasText:'Admin1Updated'})
+        .filter({hasText:'RegularUser2'})
         .filter({hasText:'User'})
         .first();
 
@@ -139,14 +144,14 @@ test.describe('Update user module', () => {
         await page.locator('select[name="usertype"]').selectOption('3');
         await page.locator('button').filter({ hasText: /^Update$/ }).click();
 
-        //for checking the success message after creating a user
+        //for checking the success message after updating user details
         await expect(page.getByText('User Update Success!')).toBeVisible();
         await page.getByRole('button', { name: 'OK' }).click();
 
         //for checking the updated admin user in the user list
        
         const updatedtargetRow=page.locator('tr')
-        .filter({hasText:'Admin1Updated'})
+        .filter({hasText:'RegularUser2'})
         .filter({hasText:'Voter'})
         .first();
         await expect(updatedtargetRow).toBeVisible();
@@ -155,14 +160,14 @@ test.describe('Update user module', () => {
     });
 
      test('Verify Close Button function', async ({page}) => {
-        await page.waitForLoadState('domcontentloaded');
-        await page.getByRole('link', { name: 'System Users' }).click();
+        await createUser(page, 'Admin5', 'AdminP5', '1');
+        await page.getByRole('button', { name: 'OK' }).click();
 
         //for checking the created admin user in the user list and updating it
        
         const targetRow=page.locator('tr')
-        .filter({hasText:'Admin1Updated'})
-        .filter({hasText:'Voter'})
+        .filter({hasText:'Admin5'})
+        .filter({hasText:'Admin'})
         .first();
 
         await expect(targetRow).toBeVisible();
@@ -174,13 +179,13 @@ test.describe('Update user module', () => {
     });
 
      test('Update voter user with empty username', async ({page}) => {
-        await page.waitForLoadState('domcontentloaded');
-        await page.getByRole('link', { name: 'System Users' }).click();
+        await createUser(page, 'Voter2', 'VoterP2', '3');
+        await page.getByRole('button', { name: 'OK' }).click();
 
         //for checking the created admin user in the user list and updating it
        
         const targetRow=page.locator('tr')
-        .filter({hasText:'Admin1Updated'})
+        .filter({hasText:'Voter2'})
         .filter({hasText:'Voter'})
         .first();
 
@@ -188,7 +193,7 @@ test.describe('Update user module', () => {
         await targetRow.getByRole('button', { name: 'Update' }).click();
         
         //for updating the user data
-         await page.getByRole('textbox', { name: 'Username' }).fill('');
+        await page.getByRole('textbox', { name: 'Username' }).fill('');
         await page.locator('select[name="usertype"]').selectOption('3');
         await page.locator('button').filter({ hasText: /^Update$/ }).click();
 
@@ -201,13 +206,13 @@ test.describe('Update user module', () => {
 
     
      test('Update voter user with empty password', async ({page}) => {
-        await page.waitForLoadState('domcontentloaded');
-        await page.getByRole('link', { name: 'System Users' }).click();
+        await createUser(page, 'Voter3', 'VoterP3', '3');
+        await page.getByRole('button', { name: 'OK' }).click();
 
         //for checking the created admin user in the user list and updating it
        
         const targetRow=page.locator('tr')
-        .filter({hasText:'Admin1Updated'})
+        .filter({hasText:'Voter3'})
         .filter({hasText:'Voter'})
         .first();
 
@@ -226,13 +231,13 @@ test.describe('Update user module', () => {
     });
 
      test('Update voter user with empty username and password', async ({page}) => {
-        await page.waitForLoadState('domcontentloaded');
-        await page.getByRole('link', { name: 'System Users' }).click();
+        await createUser(page, 'Voter4', 'VoterP4', '3');
+        await page.getByRole('button', { name: 'OK' }).click();
 
         //for checking the created admin user in the user list and updating it
        
         const targetRow=page.locator('tr')
-        .filter({hasText:'Admin1Updated'})
+        .filter({hasText:'Voter4'})
         .filter({hasText:'Voter'})
         .first();
 

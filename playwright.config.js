@@ -29,7 +29,7 @@ export default defineConfig({
   use: {
     headless: false,
     slowMo: 1000, // 1 second delay
-    baseURL: 'https://passive-born-deadline-louisiana.trycloudflare.com/',
+    baseURL: 'https://programming-phpbb-david-partner.trycloudflare.com/',
     trace: 'on-first-retry',
     /* Base URL to use in actions like `await page.goto('')`. */
     // baseURL: 'http://localhost:3000',
