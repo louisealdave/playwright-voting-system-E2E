@@ -1,8 +1,8 @@
 const {test, expect} = require('@playwright/test');
 const { login } = require('../helpers/auth');
-const { create } = require('node:domain');
 const { logout } = require('../helpers/logout');
 const { createUser } = require('../helpers/create-user');
+const { getUserRow } = require('../helpers/getUserRow');
 
 
 test.describe('Update user module', () => {
@@ -16,14 +16,9 @@ test.describe('Update user module', () => {
         await page.getByRole('button', { name: 'OK' }).click();
 
         //for checking the created admin user in the user list and updating it
-       
-        const targetRow=page.locator('tr')
-        .filter({hasText:'Admin2'})
-        .filter({hasText:'Admin'})
-        .first();
-
-        await expect(targetRow).toBeVisible();
-        await targetRow.getByRole('button', { name: 'Update' }).click();
+        const row= await getUserRow(page, 'Admin2', 'Admin');
+        await expect(row).toBeVisible();
+        await row.getByRole('button', { name: 'Update' }).click();
         
         //for updating the user data
          await page.getByRole('textbox', { name: 'Username' }).fill('Admin2Updated');
@@ -35,13 +30,9 @@ test.describe('Update user module', () => {
         await page.getByRole('button', { name: 'OK' }).click();
 
         //for checking the updated admin user in the user list
+        const updatedRow= await getUserRow(page, 'Admin2Updated', 'Admin');
+        await expect(updatedRow).toBeVisible();
        
-        const updatedtargetRow=page.locator('tr')
-        .filter({hasText:'Admin2Updated'})
-        .filter({hasText:'Admin'})
-        .first();
-        await expect(updatedtargetRow).toBeVisible();
-
         //for checking if the updated username works
         await logout(page);
         await expect(page).toHaveURL('/login')
@@ -57,14 +48,9 @@ test.describe('Update user module', () => {
         await page.getByRole('button', { name: 'OK' }).click();
     
         //for checking the created admin user in the user list and updating it
-       
-        const targetRow=page.locator('tr')
-        .filter({hasText:'Admin3'})
-        .filter({hasText:'Admin'})
-        .first();
-
-        await expect(targetRow).toBeVisible();
-        await targetRow.getByRole('button', { name: 'Update' }).click();
+        const row = await getUserRow(page, 'Admin3', 'Admin');
+        await expect(row).toBeVisible();
+        await row.getByRole('button', { name: 'Update' }).click();
         
         //for updating the user data
         await page.getByRole('textbox', { name: 'Password' }).fill('AdminUpdate123');
@@ -76,12 +62,8 @@ test.describe('Update user module', () => {
         await page.getByRole('button', { name: 'OK' }).click();
 
         //for checking the updated admin user in the user list
-       
-        const updatedtargetRow=page.locator('tr')
-        .filter({hasText:'Admin3'})
-        .filter({hasText:'Admin'})
-        .first();
-        await expect(updatedtargetRow).toBeVisible();
+        const updatedRow = await getUserRow(page, 'Admin3', 'Admin');
+        await expect(updatedRow).toBeVisible();
 
         //for checking if the updated password works
         await logout(page);
@@ -98,14 +80,9 @@ test.describe('Update user module', () => {
         await page.getByRole('button', { name: 'OK' }).click();
 
         //for checking the created admin user in the user list and updating it
-       
-        const targetRow=page.locator('tr')
-        .filter({hasText:'Admin4'})
-        .filter({hasText:'Admin'})
-        .first();
-
-        await expect(targetRow).toBeVisible();
-        await targetRow.getByRole('button', { name: 'Update' }).click();
+        const row= await getUserRow(page, 'Admin4', 'Admin');
+        await expect(row).toBeVisible();
+        await row.getByRole('button', { name: 'Update' }).click();
         
         //for updating the user data
         await page.locator('select[name="usertype"]').selectOption('2');
@@ -116,13 +93,8 @@ test.describe('Update user module', () => {
         await page.getByRole('button', { name: 'OK' }).click();
 
         //for checking the updated admin user in the user list
-       
-        const updatedtargetRow=page.locator('tr')
-        .filter({hasText:'Admin4'})
-        .filter({hasText:'User'})
-        .first();
-        await expect(updatedtargetRow).toBeVisible();
-
+       const updatedRow= await getUserRow(page, 'Admin4', 'User');
+        await expect(updatedRow).toBeVisible();
 
     });
 
@@ -131,14 +103,9 @@ test.describe('Update user module', () => {
         await page.getByRole('button', { name: 'OK' }).click();
 
         //for checking the created admin user in the user list and updating it
-       
-        const targetRow=page.locator('tr')
-        .filter({hasText:'RegularUser2'})
-        .filter({hasText:'User'})
-        .first();
-
-        await expect(targetRow).toBeVisible();
-        await targetRow.getByRole('button', { name: 'Update' }).click();
+        const row= await getUserRow(page, 'RegularUser2', 'User');
+        await expect(row).toBeVisible();
+        await row.getByRole('button', { name: 'Update' }).click();
         
         //for updating the user data
         await page.locator('select[name="usertype"]').selectOption('3');
@@ -149,12 +116,8 @@ test.describe('Update user module', () => {
         await page.getByRole('button', { name: 'OK' }).click();
 
         //for checking the updated admin user in the user list
-       
-        const updatedtargetRow=page.locator('tr')
-        .filter({hasText:'RegularUser2'})
-        .filter({hasText:'Voter'})
-        .first();
-        await expect(updatedtargetRow).toBeVisible();
+        const updatedRow= await getUserRow(page, 'RegularUser2', 'Voter');
+        await expect(updatedRow).toBeVisible();
 
 
     });
@@ -164,14 +127,9 @@ test.describe('Update user module', () => {
         await page.getByRole('button', { name: 'OK' }).click();
 
         //for checking the created admin user in the user list and updating it
-       
-        const targetRow=page.locator('tr')
-        .filter({hasText:'Admin5'})
-        .filter({hasText:'Admin'})
-        .first();
-
-        await expect(targetRow).toBeVisible();
-        await targetRow.getByRole('button', { name: 'Update' }).click();
+        const row= await getUserRow(page, 'Admin5', 'Admin');
+        await expect(row).toBeVisible();
+        await row.getByRole('button', { name: 'Update' }).click();
         
         //for checking the close button function
         await page.locator('button.btn-secondary', { hasText: 'Close' }).click();
@@ -183,14 +141,9 @@ test.describe('Update user module', () => {
         await page.getByRole('button', { name: 'OK' }).click();
 
         //for checking the created admin user in the user list and updating it
-       
-        const targetRow=page.locator('tr')
-        .filter({hasText:'Voter2'})
-        .filter({hasText:'Voter'})
-        .first();
-
-        await expect(targetRow).toBeVisible();
-        await targetRow.getByRole('button', { name: 'Update' }).click();
+        const row= await getUserRow(page, 'Voter2', 'Voter');
+        await expect(row).toBeVisible();
+        await row.getByRole('button', { name: 'Update' }).click();
         
         //for updating the user data
         await page.getByRole('textbox', { name: 'Username' }).fill('');
@@ -210,14 +163,9 @@ test.describe('Update user module', () => {
         await page.getByRole('button', { name: 'OK' }).click();
 
         //for checking the created admin user in the user list and updating it
-       
-        const targetRow=page.locator('tr')
-        .filter({hasText:'Voter3'})
-        .filter({hasText:'Voter'})
-        .first();
-
-        await expect(targetRow).toBeVisible();
-        await targetRow.getByRole('button', { name: 'Update' }).click();
+        const row= await getUserRow(page, 'Voter3', 'Voter');
+        await expect(row).toBeVisible();
+        await row.getByRole('button', { name: 'Update' }).click();
         
         //for updating the user data
          await page.getByRole('textbox', { name: 'Password' }).fill('');
@@ -235,14 +183,9 @@ test.describe('Update user module', () => {
         await page.getByRole('button', { name: 'OK' }).click();
 
         //for checking the created admin user in the user list and updating it
-       
-        const targetRow=page.locator('tr')
-        .filter({hasText:'Voter4'})
-        .filter({hasText:'Voter'})
-        .first();
-
-        await expect(targetRow).toBeVisible();
-        await targetRow.getByRole('button', { name: 'Update' }).click();
+        const row= await getUserRow(page, 'Voter4', 'Voter');
+        await expect(row).toBeVisible();
+        await row.getByRole('button', { name: 'Update' }).click();
         
         //for updating the user data
         await page.getByRole('textbox', { name: 'Username' }).fill('');

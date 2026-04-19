@@ -1,6 +1,8 @@
 const {test, expect} = require('@playwright/test');
 const { login } = require('../helpers/auth');
 const { createUser } = require('../helpers/create-user');
+const { get } = require('node:http');
+const { getUserRow } = require('../helpers/getUserRow');
 
 
 test.describe('Create user module', () => {
@@ -17,13 +19,9 @@ test.describe('Create user module', () => {
         await page.getByRole('button', { name: 'OK' }).click();
 
         //for checking the created user in the user list
-         const targetRow=page.locator('tr')
-        .filter({hasText:'Admin1'})
-        .filter({hasText:'Admin'})
-        .first();
-
-        await expect(targetRow).toBeVisible();
-       
+        const row = await getUserRow(page, 'Admin1', 'Admin');
+        await expect(row).toBeVisible();
+        
     });
 
    
@@ -35,13 +33,9 @@ test.describe('Create user module', () => {
         await page.getByRole('button', { name: 'OK' }).click();
 
         //for checking the created user in the user list
-         const targetRow=page.locator('tr')
-        .filter({hasText:'RegularUser1'})
-        .filter({hasText:'User'})
-        .first();
-
-        await expect(targetRow).toBeVisible();
-    
+        const row = await getUserRow(page, 'RegularUser1', 'User');
+        await expect(row).toBeVisible();
+        
     });
 
 
@@ -53,12 +47,9 @@ test.describe('Create user module', () => {
         await page.getByRole('button', { name: 'OK' }).click();
 
        //for checking the created user in the user list
-         const targetRow=page.locator('tr')
-        .filter({hasText:'Voter1'})
-        .filter({hasText:'Voter'})
-        .first();
-
-        await expect(targetRow).toBeVisible();
+        
+      const row = await getUserRow(page, 'Voter1', 'Voter');
+      await expect(row).toBeVisible();
     });
 
      test('Create user with empty Username', async ({page}) => {
