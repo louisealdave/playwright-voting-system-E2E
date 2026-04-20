@@ -1,0 +1,15 @@
+async function createCandidate(page, firstName, lastName, level, section, electionName, positionName) {
+    await page.waitForLoadState('domcontentloaded');
+    await page.getByRole('link', { name: 'Candidate' }).click();
+     await page.getByRole('button', { name: 'Add New Candidate' }).click();
+    await page.getByRole('textbox', { name: 'Candidate First Name' }).fill(firstName);
+    await page.getByRole('textbox', { name: 'Candidate Last Name' }).fill(lastName);
+    await page.getByRole('textbox', { name: 'Candidate Level' }).fill(level);
+    await page.getByRole('textbox', { name: 'Candidate Section' }).fill(section);
+    await page.getByRole('combobox', { name: 'Candidacy Election' }).selectOption(electionName);
+    await page.getByLabel('Candidacy Position').selectOption({ label: positionName });
+    await page.getByRole('button', { name: 'Create' }).click();
+
+}
+
+module.exports = { createCandidate };
